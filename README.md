@@ -111,7 +111,7 @@ PPSPingServices是一个服务类，用作ping的入口，一个管理类，供�
 //发送网络包失败
 - (void)simplePing:(SimplePing *)pinger didFailToSendPacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber error:(NSError *)error;
 //收到网络包回应
-- (void)simplePing:(SimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet sequenceNumber:(uint16_t)sequenceNumber;
+- (void)pps_simplePing:(PPSSimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet timeToLive:(NSInteger)timeToLive sequenceNumber:(uint16_t)sequenceNumber timeElapsed:(NSTimeInterval)timeElapsed;
 //收到错误的网络包
 - (void)simplePing:(SimplePing *)pinger didReceiveUnexpectedPacket:(NSData *)packet;
 ```
