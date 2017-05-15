@@ -1,6 +1,6 @@
 //
-//  NAQOSPing.h
-//  NAQOS
+//  PPSPing.h
+//  PPS
 //
 //  Created by ppsheep on 2017/4/24.
 //  Copyright © 2017年 羊谦. All rights reserved.
@@ -9,16 +9,16 @@
 
 #import <Foundation/Foundation.h>
 
-#import "NAQOSPingSummary.h"
+#import "PPSPingSummary.h"
 
-@class NAQOSPingSummary;
-@protocol NAQOSPingDelegate;
+@class PPSPingSummary;
+@protocol PPSPingDelegate;
 
 typedef void(^StartupCallback)(BOOL success, NSError *error);
 
-@interface NAQOSPing : NSObject
+@interface PPSPing : NSObject
 
-@property (weak, nonatomic) id<NAQOSPingDelegate>      delegate;
+@property (weak, nonatomic) id<PPSPingDelegate>      delegate;
 
 @property (copy, nonatomic) NSString                *host;
 @property (assign, atomic) NSTimeInterval           pingPeriod;
@@ -36,15 +36,15 @@ typedef void(^StartupCallback)(BOOL success, NSError *error);
 
 @end
 
-@protocol NAQOSPingDelegate <NSObject>
+@protocol PPSPingDelegate <NSObject>
 
 @optional
 
--(void)ping:(NAQOSPing *)pinger didFailWithError:(NSError *)error;
--(void)ping:(NAQOSPing *)pinger didSendPingWithSummary:(NAQOSPingSummary *)summary;
--(void)ping:(NAQOSPing *)pinger didFailToSendPingWithSummary:(NAQOSPingSummary *)summary error:(NSError *)error;
--(void)ping:(NAQOSPing *)pinger didTimeoutWithSummary:(NAQOSPingSummary *)summary;
--(void)ping:(NAQOSPing *)pinger didReceiveReplyWithSummary:(NAQOSPingSummary *)summary;
--(void)ping:(NAQOSPing *)pinger didReceiveUnexpectedReplyWithSummary:(NAQOSPingSummary *)summary;
+-(void)ping:(PPSPing *)pinger didFailWithError:(NSError *)error;
+-(void)ping:(PPSPing *)pinger didSendPingWithSummary:(PPSPingSummary *)summary;
+-(void)ping:(PPSPing *)pinger didFailToSendPingWithSummary:(PPSPingSummary *)summary error:(NSError *)error;
+-(void)ping:(PPSPing *)pinger didTimeoutWithSummary:(PPSPingSummary *)summary;
+-(void)ping:(PPSPing *)pinger didReceiveReplyWithSummary:(PPSPingSummary *)summary;
+-(void)ping:(PPSPing *)pinger didReceiveUnexpectedReplyWithSummary:(PPSPingSummary *)summary;
 
 @end

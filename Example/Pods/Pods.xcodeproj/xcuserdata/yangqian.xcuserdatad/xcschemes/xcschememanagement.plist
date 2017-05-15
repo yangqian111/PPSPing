@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>JSONModel.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>PPSPing.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,12 +32,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9D4EF8F70EA9560FF0AA6E760F356ABA</key>
+		<key>49A38F233CFFD12882B045B63598C77B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A7D84814EDF785AA0691087E398CB87E</key>
+		<key>C1C167C93B9FA72DD86315B3EF3DFA71</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DC3688684BF42A20A8998F31DDA51A49</key>
 		<dict>
 			<key>primary</key>
 			<true/>

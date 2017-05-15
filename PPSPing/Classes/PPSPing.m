@@ -1,12 +1,12 @@
 //
-//  NAQOSPing.m
-//  NAQOS
+//  PPSPing.m
+//  PPS
 //
 //  Created by ppsheep on 2017/4/24.
 //  Copyright © 2017年 羊谦. All rights reserved.
 //
 
-#import "NAQOSPing.h"
+#import "PPSPing.h"
 
 #if TARGET_OS_EMBEDDED || TARGET_IPHONE_SIMULATOR
 #import <CFNetwork/CFNetwork.h>
@@ -14,7 +14,7 @@
 #import <CoreServices/CoreServices.h>
 #endif
 
-#import "NAQOSICMPHeader.h"
+#import "PPSICMPHeader.h"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -35,7 +35,7 @@ static NSUInteger const kDefaultTTL =                   49;
 static NSTimeInterval const kDefaultPingPeriod =        1.0;
 static NSTimeInterval const kDefaultTimeout =           2.0;
 
-@interface NAQOSPing ()
+@interface PPSPing ()
 
 @property (assign, atomic) int                          socket;
 @property (strong, nonatomic) NSData                    *hostAddress;
@@ -54,7 +54,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
 
 @end
 
-@implementation NAQOSPing {
+@implementation PPSPing {
     NSUInteger                                          _payloadSize;
     NSUInteger                                          _ttl;
     NSTimeInterval                                      _timeout;
@@ -67,7 +67,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
     @synchronized(self) {
         if (self.isPinging) {
             if (self.debug) {
-                NSLog(@"NAQOSPing: can't set timeout while pinger is running.");
+                NSLog(@"PPSPing: can't set timeout while pinger is running.");
             }
         }
         else {
@@ -91,7 +91,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
     @synchronized(self) {
         if (self.isPinging) {
             if (self.debug) {
-                NSLog(@"NAQOSPing: can't set ttl while pinger is running.");
+                NSLog(@"PPSPing: can't set ttl while pinger is running.");
             }
         }
         else {
@@ -115,7 +115,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
     @synchronized(self) {
         if (self.isPinging) {
             if (self.debug) {
-                NSLog(@"NAQOSPing: can't set payload size while pinger is running.");
+                NSLog(@"PPSPing: can't set payload size while pinger is running.");
             }
         }
         else {
@@ -139,7 +139,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
     @synchronized(self) {
         if (self.isPinging) {
             if (self.debug) {
-                NSLog(@"NAQOSPing: can't set pingPeriod while pinger is running.");
+                NSLog(@"PPSPing: can't set pingPeriod while pinger is running.");
             }
         }
         else {
@@ -165,7 +165,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
     //error out of its already setup
     if (self.isReady) {
         if (self.debug) {
-            NSLog(@"NAQOSPing: Can't setup, already setup.");
+            NSLog(@"PPSPing: Can't setup, already setup.");
         }
         
         //notify about error and return
@@ -178,7 +178,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
     //error out if no host is set
     if (!self.host) {
         if (self.debug) {
-            NSLog(@"NAQOSPing: set host before attempting to start.");
+            NSLog(@"PPSPing: set host before attempting to start.");
         }
         
         //notify about error and return
@@ -391,7 +391,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
             const struct ICMPHeader *headerPointer = [[self class] icmpInPacket:packet];
             NSUInteger seqNo = (NSUInteger)OSSwapBigToHostInt16(headerPointer->sequenceNumber);
             NSNumber *key = @(seqNo);
-            NAQOSPingSummary *pingSummary = [(NAQOSPingSummary *)self.pendingPings[key] copy];
+            PPSPingSummary *pingSummary = [(PPSPingSummary *)self.pendingPings[key] copy];
             
             if (pingSummary) {
                 if ([self isValidPingResponsePacket:packet]) {
@@ -399,7 +399,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
                     pingSummary.receiveDate = receiveDate;
                     pingSummary.host = [[self class] sourceAddressInPacket:packet];
                     
-                    pingSummary.status = NAQOSPingStatusDidReceivePacket;
+                    pingSummary.status = PPSPingStatusDidReceivePacket;
                     
                     //invalidate the timeouttimer
                     NSTimer *timer = self.timeoutTimers[key];
@@ -415,7 +415,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
                     }
                 }
                 else {
-                    pingSummary.status = NAQOSPingStatusDidReceiveUnexpectedPacket;
+                    pingSummary.status = PPSPingStatusDidReceiveUnexpectedPacket;
                     
                     if (self.delegate && [self.delegate respondsToSelector:@selector(ping:didReceiveUnexpectedReplyWithSummary:)] ) {
                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -493,7 +493,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
         icmpPtr->checksum = in_cksum([packet bytes], [packet length]);
         
         // this is our ping summary
-        NAQOSPingSummary *newPingSummary = [NAQOSPingSummary new];
+        PPSPingSummary *newPingSummary = [PPSPingSummary new];
         
         // Send the packet.
         if (self.socket == 0) {
@@ -511,7 +511,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
             newPingSummary.sendDate = sendDate;
             newPingSummary.ttl = self.ttl;
             newPingSummary.payloadSize = self.payloadSize;
-            newPingSummary.status = NAQOSPingStatusDidStart;
+            newPingSummary.status = PPSPingStatusDidStart;
             
             //add it to pending pings
             NSNumber *key = @(self.nextSequenceNumber);
@@ -521,7 +521,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
             self.nextSequenceNumber += 1;
             
             //we create a copy, this one will be passed out to other threads
-            NAQOSPingSummary *pingSummaryCopy = [newPingSummary copy];
+            PPSPingSummary *pingSummaryCopy = [newPingSummary copy];
             
             //we need to clean up our list of pending pings, and we do that after the timeout has elapsed (+ some grace period)
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((self.timeout + kPendingPingsCleanupGrace) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -534,7 +534,7 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
             NSTimer *timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:self.timeout
                                                                      target:[NSBlockOperation blockOperationWithBlock:^{
                 
-                newPingSummary.status = NAQOSPingStatusDidTimeout;
+                newPingSummary.status = PPSPingStatusDidTimeout;
                 
                 //notify about the failure
                 if (self.delegate && [self.delegate respondsToSelector:@selector(ping:didTimeoutWithSummary:)]) {
@@ -591,13 +591,13 @@ static NSTimeInterval const kDefaultTimeout =           2.0;
             
             //little log
             if (self.debug) {
-                NSLog(@"NAQOSPing: failed to send packet with error code: %d", err);
+                NSLog(@"PPSPing: failed to send packet with error code: %d", err);
             }
             
             //change status
-            newPingSummary.status = NAQOSPingStatusDidFailToSendPacket;
+            newPingSummary.status = PPSPingStatusDidFailToSendPacket;
             
-            NAQOSPingSummary *pingSummaryCopyAfterFailure = [newPingSummary copy];
+            PPSPingSummary *pingSummaryCopyAfterFailure = [newPingSummary copy];
             
             //notify delegate
             if (self.delegate && [self.delegate respondsToSelector:@selector(ping:didFailToSendPingWithSummary:error:)]) {
@@ -797,7 +797,7 @@ static uint16_t in_cksum(const void *buffer, size_t bufferLen)
 
 -(id)init {
     if (self = [super init]) {
-        self.setupQueue = dispatch_queue_create("NAQOSPing setup queue", 0);
+        self.setupQueue = dispatch_queue_create("PPSPing setup queue", 0);
         self.isStopped = YES;
         self.identifier = arc4random();
     }

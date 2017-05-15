@@ -1,14 +1,14 @@
 //
-//  NAQOSPingSummary.m
-//  NAQOS
+//  PPSPingSummary.m
+//  PPS
 //
 //  Created by ppsheep on 2017/4/24.
 //  Copyright © 2017年 羊谦. All rights reserved.
 //
 
-#import "NAQOSPingSummary.h"
+#import "PPSPingSummary.h"
 
-@implementation NAQOSPingSummary
+@implementation PPSPingSummary
 
 #pragma mark - custom acc
 
@@ -28,7 +28,7 @@
 #pragma mark - copying
 
 -(id)copyWithZone:(NSZone *)zone {
-    NAQOSPingSummary *copy = [[[self class] allocWithZone:zone] init];
+    PPSPingSummary *copy = [[[self class] allocWithZone:zone] init];
     
     copy.sequenceNumber = self.sequenceNumber;
     copy.payloadSize = self.payloadSize;
@@ -45,7 +45,7 @@
 
 -(id)init {
     if (self = [super init]) {
-        self.status = NAQOSPingStatusDidStart;
+        self.status = PPSPingStatusDidStart;
     }
     
     return self;
@@ -62,28 +62,28 @@
 -(NSString *)description {
     NSString *statusString = nil;
     switch (self.status) {
-        case NAQOSPingStatusError:
-            statusString = @"NAQOSPingStatusError";
+        case PPSPingStatusError:
+            statusString = @"PPSPingStatusError";
             return [NSString stringWithFormat:@"Can not ping to %@", self.host];
             break;
-        case NAQOSPingStatusDidStart:
-            statusString = @"NAQOSPingStatusDidStart";
+        case PPSPingStatusDidStart:
+            statusString = @"PPSPingStatusDidStart";
             return [NSString stringWithFormat:@"PING %@ start",self.host];
             break;
-        case NAQOSPingStatusFinished:
-            statusString = @"NAQOSPingStatusFinished";
+        case PPSPingStatusFinished:
+            statusString = @"PPSPingStatusFinished";
             return [NSString stringWithFormat:@"PING %@ finish",self.host];
             break;
-        case NAQOSPingStatusDidTimeout:
+        case PPSPingStatusDidTimeout:
             return [NSString stringWithFormat:@"Request timeout for icmp_seq %ld", (long)self.sequenceNumber];
             break;
-        case NAQOSPingStatusDidReceivePacket:
+        case PPSPingStatusDidReceivePacket:
             return [NSString stringWithFormat:@"%ld bytes: icmp_seq=%ld ttl=%ld time=%.3f ms", (long)self.payloadSize, (long)self.sequenceNumber, (long)self.ttl, self.rtt];
             break;
-        case NAQOSPingStatusDidFailToSendPacket:
+        case PPSPingStatusDidFailToSendPacket:
             return [NSString stringWithFormat:@"Fail to send packet: icmp_seq=%ld", (long)self.sequenceNumber];
             break;
-        case NAQOSPingStatusDidReceiveUnexpectedPacket:
+        case PPSPingStatusDidReceiveUnexpectedPacket:
             return [NSString stringWithFormat:@"Receive unexpected: icmp_seq=%ld", (long)self.sequenceNumber];
             break;
         default:

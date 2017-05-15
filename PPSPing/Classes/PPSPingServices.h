@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 //#import <CoreGraphics/CoreGraphics.h>
 
-@class NAQOSPingSummary;
+@class PPSPingSummary;
 
-typedef void(^PingsBackHandler)(NAQOSPingSummary *pingItem, NSArray *pingItems);
+typedef void(^PingsBackHandler)(PPSPingSummary *pingItem, NSArray *pingItems);
 
-@interface NAQOSPingServices : NSObject
+@interface PPSPingServices : NSObject
 
 + (instancetype)serviceWithAddress:(NSString *)address;
 

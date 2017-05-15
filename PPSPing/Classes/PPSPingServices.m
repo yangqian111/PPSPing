@@ -6,11 +6,11 @@
 //  Copyright © 2016年 羊谦. All rights reserved.
 //
 
-#import "NAQOSPingServices.h"
-#import "NAQOSPing.h"
-#import "NAQOSPingSummary.h"
+#import "PPSPingServices.h"
+#import "PPSPing.h"
+#import "PPSPingSummary.h"
 
-@interface NAQOSPingServices()<NAQOSPingDelegate>
+@interface PPSPingServices()<PPSPingDelegate>
 
 {
     BOOL _hasStarted;
@@ -19,7 +19,7 @@
 }
 
 @property (nonatomic, copy)   NSString   *address;
-@property (nonatomic, strong) NAQOSPing *ping;
+@property (nonatomic, strong) PPSPing *ping;
 @property (nonatomic, strong) NSTimer *timer;
 //  发包次数，默认100个包
 @property(nonatomic, assign) NSInteger  maximumPingTimes;
@@ -29,15 +29,15 @@
 @end
 
 
-@implementation NAQOSPingServices
+@implementation PPSPingServices
 
 + (instancetype)serviceWithAddress:(NSString *)address {
-    NAQOSPingServices *services = [[NAQOSPingServices alloc] initWithAddress:address];
+    PPSPingServices *services = [[PPSPingServices alloc] initWithAddress:address];
     return services;
 }
 
 +(instancetype)serviceWithAddress:(NSString *)address maximumPingTimes:(NSInteger)count {
-     NAQOSPingServices *services = [[NAQOSPingServices alloc] initWithAddress:address maximumPingTimes:count];
+     PPSPingServices *services = [[PPSPingServices alloc] initWithAddress:address maximumPingTimes:count];
     return services;
 }
 
@@ -56,7 +56,7 @@
     if (self) {
         _maximumPingTimes = maximumPingTimes-1;
         _address = [address copy];
-        _ping = [NAQOSPing new];
+        _ping = [PPSPing new];
         _ping.host = _address;
         _ping.delegate = self;
         _ping.timeout = 1;
@@ -73,8 +73,8 @@
             [self.ping startPinging];
         } else {
             NSLog(@"ping失败");
-            NAQOSPingSummary *summary = [[NAQOSPingSummary alloc] init];
-            summary.status = NAQOSPingStatusFinished;
+            PPSPingSummary *summary = [[PPSPingSummary alloc] init];
+            summary.status = PPSPingStatusFinished;
             [_pingItems addObject:summary];
             self.handler(summary, _pingItems);
         }
@@ -86,38 +86,38 @@
     [self.ping stop];
 }
 
--(void)ping:(NAQOSPing *)pinger didFailWithError:(NSError *)error {
-    NAQOSPingSummary *summary = [[NAQOSPingSummary alloc] init];
-    summary.status = NAQOSPingStatusError;
+-(void)ping:(PPSPing *)pinger didFailWithError:(NSError *)error {
+    PPSPingSummary *summary = [[PPSPingSummary alloc] init];
+    summary.status = PPSPingStatusError;
     [self handlSummary:summary];
 }
 
--(void)ping:(NAQOSPing *)pinger didTimeoutWithSummary:(NAQOSPingSummary *)summary {
+-(void)ping:(PPSPing *)pinger didTimeoutWithSummary:(PPSPingSummary *)summary {
     [self handlSummary:summary];
 }
 
--(void)ping:(NAQOSPing *)pinger didSendPingWithSummary:(NAQOSPingSummary *)summary {
+-(void)ping:(PPSPing *)pinger didSendPingWithSummary:(PPSPingSummary *)summary {
     if (_hasStarted) {
         _hasStarted = YES;
         [self handlSummary:summary];
     }
 }
 
--(void)ping:(NAQOSPing *)pinger didReceiveReplyWithSummary:(NAQOSPingSummary *)summary {
+-(void)ping:(PPSPing *)pinger didReceiveReplyWithSummary:(PPSPingSummary *)summary {
     [self handlSummary:summary];
 }
 
--(void)ping:(NAQOSPing *)pinger didFailToSendPingWithSummary:(NAQOSPingSummary *)summary error:(NSError *)error {
+-(void)ping:(PPSPing *)pinger didFailToSendPingWithSummary:(PPSPingSummary *)summary error:(NSError *)error {
     [self handlSummary:summary];
 }
 
--(void)ping:(NAQOSPing *)pinger didReceiveUnexpectedReplyWithSummary:(NAQOSPingSummary *)summary {
+-(void)ping:(PPSPing *)pinger didReceiveUnexpectedReplyWithSummary:(PPSPingSummary *)summary {
     [self handlSummary:summary];
 }
 
-- (void)handlSummary:(NAQOSPingSummary *)summary {
+- (void)handlSummary:(PPSPingSummary *)summary {
     if (summary.sequenceNumber == _maximumPingTimes) {
-        summary.status = NAQOSPingStatusFinished;
+        summary.status = PPSPingStatusFinished;
         _hasStarted = NO;
         [self.ping stop];
     }
@@ -171,10 +171,10 @@
 //
 //+ (CGFloat)statisticsWithPingItems:(NSArray *)pingItems{
 //    __block NSInteger receivedCount = 0, allCount = 0;
-//    [pingItems enumerateObjectsUsingBlock:^(NAQOSPingSummary *obj, NSUInteger idx, BOOL *stop) {
-//        if (obj.status != NAQOSPingStatusFinished && obj.status != NAQOSPingStatusError && obj.status != NAQOSPingStatusDidStart) {
+//    [pingItems enumerateObjectsUsingBlock:^(PPSPingSummary *obj, NSUInteger idx, BOOL *stop) {
+//        if (obj.status != PPSPingStatusFinished && obj.status != PPSPingStatusError && obj.status != PPSPingStatusDidStart) {
 //            allCount ++;
-//            if (obj.status == NAQOSPingStatusDidReceivePacket) {
+//            if (obj.status == PPSPingStatusDidReceivePacket) {
 //                receivedCount ++;
 //            }
 //        }

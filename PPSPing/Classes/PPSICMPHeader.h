@@ -1,13 +1,13 @@
 //
 //  ICMPHeader.h
-//  NAQOS
+//  PPS
 //
 //  Created by ppsheep on 2017/4/24.
 //  Copyright © 2017年 羊谦. All rights reserved.
 //
 
-#ifndef NAQOS_ICMPHeader_h
-#define NAQOS_ICMPHeader_h
+#ifndef PPS_ICMPHeader_h
+#define PPS_ICMPHeader_h
 
 #include <AssertMacros.h>
 

@@ -10,10 +10,10 @@
 #endif
 #endif
 
-#import "NAQOSICMPHeader.h"
-#import "NAQOSPing.h"
-#import "NAQOSPingServices.h"
-#import "NAQOSPingSummary.h"
+#import "PPSICMPHeader.h"
+#import "PPSPing.h"
+#import "PPSPingServices.h"
+#import "PPSPingSummary.h"
 
 FOUNDATION_EXPORT double PPSPingVersionNumber;
 FOUNDATION_EXPORT const unsigned char PPSPingVersionString[];
