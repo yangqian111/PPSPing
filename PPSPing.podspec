@@ -19,6 +19,7 @@ DESC
 
   s.source_files = 'PPSPing/Classes/**/*'
 
+  s.requires_arc = true
 
-  s.public_header_files = 'Pod/Classes/**/*.h'
+  s.public_header_files = 'PPSPing/Classes/**/*.h'
 end
