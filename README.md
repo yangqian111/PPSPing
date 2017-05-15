@@ -1,4 +1,4 @@
-# PPSSimplePing
+# PPSPing
 iOS端的一个ping网络工具，修复了之前不能够并发Ping的bug和不能够在子线程中发起的bug
 
 此次版本还加入了pod支持，可以通过pod集成
