@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'PPSPing_Example' do
+  pod 'PPSPing', :path => '../'
+
+  target 'PPSPing_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

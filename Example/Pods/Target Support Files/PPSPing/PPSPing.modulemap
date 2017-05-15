@@ -1,0 +1,6 @@
+framework module PPSPing {
+  umbrella header "PPSPing-umbrella.h"
+
+  export *
+  module * { export * }
+}
