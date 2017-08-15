@@ -1,4 +1,7 @@
 # PPSPing
+
+new：最新修复了xcode9 check_compile_time导致编译失败的错误，在iOS11中，将宏定义改成了__Check_Compile_Time
+
 iOS端的一个ping网络工具，修复了之前不能够并发Ping的bug和不能够在子线程中发起的bug
 
 此次版本还加入了pod支持，可以通过pod集成
@@ -12,7 +15,7 @@ iOS端的一个ping网络工具，修复了之前不能够并发Ping的bug和不
 ##### pod方式引入
 
 ```
-pod 'PPSPing', '~> 0.1.0'
+pod 'PPSPing', '~> 0.3.0'
 
 ```
 
