@@ -1,6 +1,6 @@
 PODS:
   - JSONModel (1.7.0)
-  - PPSPing (0.1.0)
+  - PPSPing (0.3.0)
 
 DEPENDENCIES:
   - JSONModel
@@ -12,7 +12,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
-  PPSPing: a338ad6fd6bbef00c8d1a422f9e66b7af481f42c
+  PPSPing: f275a44303d6e1ebbd07b90fe8d29831838e58a7
 
 PODFILE CHECKSUM: ab87bab9aa043e71762a9ee82c9fcec0cde523a5
 

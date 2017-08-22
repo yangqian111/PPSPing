@@ -7,11 +7,10 @@
 //
 
 #import "PPSAppDelegate.h"
-#import <PPSPing/PPSPingServices.h>
 
 @interface PPSAppDelegate()
 
-@property (nonatomic, strong) PPSPingServices *service;
+
 
 @end
 
@@ -19,10 +18,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.service = [PPSPingServices serviceWithAddress:@"www.163.com"];
-    [self.service startWithCallbackHandler:^(PPSPingSummary *pingItem, NSArray *pingItems) {
-        NSLog(@"%@",pingItem);
-    }];
     return YES;
 }
 
